@@ -28,6 +28,7 @@ gamma = 0.8
 P_mu = np.zeros((len(states), len(states)))
 P_mu = np.array([P[mu[s]][s - 1] for s in states])
 C = np.zeros(len(states))
+inv = [(4.0/11.0), (3.0/11.0), (4.0/11.0)]
 
 # Fill in the entries of P^mu and C based on the policy
 for i in states:
@@ -38,9 +39,12 @@ for i in states:
 # J^mu = C + gamma * P^mu * J^mu
 # (I - gamma * P^mu) * J^mu = C
 # J^mu = inv(I - gamma * P^mu) * C
+
 I = np.eye(len(states)) # Identity matrix
 J_mu = np.linalg.inv(I - gamma * P_mu).dot(C)
+V_mu=np.sum([cost(s,mu[s])*inv[s-1] for s in states])
 
 print("C:", C)
 print("P^mu:", P_mu)
 print("J^mu:", J_mu)
+print("V^mu:", V_mu)
